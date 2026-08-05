@@ -34,15 +34,35 @@ require_kt_node_build_env() {
   fi
 }
 
+safe_path_list() {
+  local env_name=$1
+  local kind=$2
+  local value=${!env_name:-}
+  local safe_root=".ktm-go-paths/$kind"
+  local index=0
+  mkdir -p "$safe_root"
+  while IFS= read -r root; do
+    local safe_path="$safe_root/p$index"
+    rm -f "$safe_path"
+    ln -s "$root" "$safe_path"
+    if [[ $index -gt 0 ]]; then printf ':'; fi
+    printf '%s' "$PWD/$safe_path"
+    index=$((index + 1))
+  done < <(split_paths "$value")
+}
+
 cflags_from_cpath() {
   while IFS= read -r root; do printf ' -I%s' "$root"; done < <(split_paths "${CPATH:-}")
 }
 
 ldflags_from_library_path() {
-  while IFS= read -r root; do printf ' -L%s' "$root"; done < <(split_paths "${LIBRARY_PATH:-}")
+  while IFS= read -r root; do printf ' -L%s -Wl,-rpath-link,%s' "$root" "$root"; done < <(split_paths "${LIBRARY_PATH:-}")
 }
 
 require_kt_node_build_env
+export CPATH="$(safe_path_list CPATH cpath)"
+export LIBRARY_PATH="$(safe_path_list LIBRARY_PATH libpath)"
+export LD_LIBRARY_PATH="$(safe_path_list LD_LIBRARY_PATH ldpath)"
 export CGO_ENABLED=1
 export CGO_CFLAGS="${CGO_CFLAGS:-}$(cflags_from_cpath)"
 export CGO_LDFLAGS="${CGO_LDFLAGS:-}$(ldflags_from_library_path) -lkt_node"
