@@ -1,7 +1,7 @@
 package ktrobotics
 
 /*
-#cgo LDFLAGS: -l_ktrobotics
+#cgo LDFLAGS: -lkt_node
 #include <stdlib.h>
 #include <stdint.h>
 #include "kt_robotics.h"

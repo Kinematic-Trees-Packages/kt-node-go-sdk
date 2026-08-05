@@ -1,3 +1,3 @@
 # ktrobotics Go SDK
 
-High-level Go wrapper over `lib_ktrobotics.so.1` using cgo.
+High-level Go wrapper over `libkt_node` using cgo.
