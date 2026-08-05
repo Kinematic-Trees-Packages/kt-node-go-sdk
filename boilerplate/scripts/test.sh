@@ -56,7 +56,10 @@ cflags_from_cpath() {
 }
 
 ldflags_from_library_path() {
-  while IFS= read -r root; do printf ' -L%s -Wl,-rpath-link,%s' "$root" "$root"; done < <(split_paths "${LIBRARY_PATH:-}")
+  # Keep this intentionally linker-portable. TeamCity's Go toolchain can route
+  # cgo through a clang/zig-style linker that rejects GNU ld's -rpath-link, and
+  # the smoke already exports LD_LIBRARY_PATH for runtime discovery.
+  while IFS= read -r root; do printf ' -L%s' "$root"; done < <(split_paths "${LIBRARY_PATH:-}")
 }
 
 require_kt_node_build_env
