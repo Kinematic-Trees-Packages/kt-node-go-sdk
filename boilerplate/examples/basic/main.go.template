@@ -1,0 +1,11 @@
+package main
+
+import (
+    "fmt"
+
+    "{{KTM_CREATE_MODULE_NAME}}/internal/robot"
+)
+
+func main() {
+    fmt.Println(robot.New().Status())
+}

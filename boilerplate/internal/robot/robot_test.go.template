@@ -1,0 +1,10 @@
+package robot
+
+import "testing"
+
+func TestABIVersionLoadsKtNode(t *testing.T) {
+	major, _ := New().ABIVersion()
+	if major == 0 {
+		t.Fatal("kt-node ABI major is zero")
+	}
+}

@@ -1,0 +1,24 @@
+package robot
+
+/*
+#cgo LDFLAGS: -lkt_node
+#include <stdint.h>
+#include <kt_robotics.h>
+*/
+import "C"
+
+import "fmt"
+
+// Robot is the project-facing SDK interface. Add your robot behavior here.
+type Robot struct{}
+
+func New() *Robot { return &Robot{} }
+
+func (r *Robot) ABIVersion() (uint32, uint32) {
+	return uint32(C.kt_abi_version_major()), uint32(C.kt_abi_version_minor())
+}
+
+func (r *Robot) Status() string {
+	major, minor := r.ABIVersion()
+	return fmt.Sprintf("kt-node ABI %d.%d loaded", major, minor)
+}
