@@ -1,10 +1,10 @@
-package ktrobotics
+package ktnode
 
 import (
 	"fmt"
 
-	data "github.com/kinematic-trees/librobotics-language-video-nodes/sdk/go/ktrobotics/generated/bow/data"
 	flatbuffers "github.com/google/flatbuffers/go"
+	data "github.com/kinematic-trees-packages/kt-node-go-sdk/go/ktnode/generated/bow/data"
 )
 
 type ImageFrame struct {
@@ -29,14 +29,20 @@ type ImageSummary struct {
 }
 
 func EncodeImageSample(frame ImageFrame) ([]byte, error) {
-	if frame.Width <= 0 || frame.Height <= 0 || frame.Channels <= 0 { return nil, fmt.Errorf("invalid frame shape") }
-	if len(frame.Data) != frame.Width*frame.Height*frame.Channels { return nil, fmt.Errorf("frame data length %d does not match shape", len(frame.Data)) }
+	if frame.Width <= 0 || frame.Height <= 0 || frame.Channels <= 0 {
+		return nil, fmt.Errorf("invalid frame shape")
+	}
+	if len(frame.Data) != frame.Width*frame.Height*frame.Channels {
+		return nil, fmt.Errorf("frame data length %d does not match shape", len(frame.Data))
+	}
 	builder := flatbuffers.NewBuilder(len(frame.Data) + 256)
 	source := builder.CreateString(frame.Source)
 	dataVec := builder.CreateByteVector(frame.Data)
 	shape := []uint32{uint32(frame.Height), uint32(frame.Width), uint32(frame.Channels)}
 	data.ImageSampleStartDataShapeVector(builder, len(shape))
-	for i := len(shape) - 1; i >= 0; i-- { builder.PrependUint32(shape[i]) }
+	for i := len(shape) - 1; i >= 0; i-- {
+		builder.PrependUint32(shape[i])
+	}
 	shapeVec := builder.EndVector(len(shape))
 	data.ImageSampleStart(builder)
 	data.ImageSampleAddSource(builder, source)
@@ -57,12 +63,20 @@ func EncodeImageSample(frame ImageFrame) ([]byte, error) {
 }
 
 func DecodeImageSampleSummary(payload []byte, prefix int) (ImageSummary, error) {
-	if len(payload) < 8 { return ImageSummary{}, fmt.Errorf("payload too small") }
+	if len(payload) < 8 {
+		return ImageSummary{}, fmt.Errorf("payload too small")
+	}
 	sample := data.GetRootAsImageSample(payload, 0)
 	shape := make([]uint32, sample.DataShapeLength())
-	for i := range shape { shape[i] = sample.DataShape(i) }
-	if prefix < 0 { prefix = 0 }
-	if prefix > sample.DataLength() { prefix = sample.DataLength() }
+	for i := range shape {
+		shape[i] = sample.DataShape(i)
+	}
+	if prefix < 0 {
+		prefix = 0
+	}
+	if prefix > sample.DataLength() {
+		prefix = sample.DataLength()
+	}
 	bytes := make([]byte, prefix)
 	copy(bytes, sample.DataBytes()[:prefix])
 	return ImageSummary{

@@ -3,7 +3,7 @@ package robot
 /*
 #cgo LDFLAGS: -lkt_node
 #include <stdint.h>
-#include <kt_robotics.h>
+#include <kt_node.h>
 */
 import "C"
 

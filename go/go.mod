@@ -1,4 +1,4 @@
-module github.com/kinematic-trees/librobotics-language-video-nodes/sdk/go
+module github.com/kinematic-trees-packages/kt-node-go-sdk/go
 
 go 1.25.0
 

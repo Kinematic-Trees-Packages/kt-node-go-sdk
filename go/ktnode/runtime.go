@@ -1,10 +1,10 @@
-package ktrobotics
+package ktnode
 
 /*
 #cgo LDFLAGS: -lkt_node
 #include <stdlib.h>
 #include <stdint.h>
-#include "kt_robotics.h"
+#include "kt_node.h"
 
 extern kt_algorithm_outcome_t goKtSetup(void* user_data, kt_algorithm_context_t* context);
 extern kt_algorithm_outcome_t goKtStep(void* user_data, kt_algorithm_context_t* context);
@@ -208,10 +208,10 @@ type runtimeState struct{ node Node }
 
 func NewRuntime(packagePath, runtimePath string, node Node) (*Runtime, error) {
 	if node == nil {
-		return nil, errors.New("ktrobotics: nil node")
+		return nil, errors.New("ktnode: nil node")
 	}
 	if C.kt_abi_version_major() != C.KT_ABI_VERSION_MAJOR {
-		return nil, fmt.Errorf("unsupported KT Robotics ABI major %d", uint32(C.kt_abi_version_major()))
+		return nil, fmt.Errorf("unsupported KT Node ABI major %d", uint32(C.kt_abi_version_major()))
 	}
 	state := &runtimeState{node: node}
 	handle := cgo.NewHandle(state)
@@ -222,7 +222,7 @@ func NewRuntime(packagePath, runtimePath string, node Node) (*Runtime, error) {
 	callbacks := (*C.kt_algorithm_callbacks_v1)(C.malloc(C.sizeof_kt_algorithm_callbacks_v1))
 	if callbacks == nil {
 		handle.Delete()
-		return nil, errors.New("ktrobotics: failed to allocate callback table")
+		return nil, errors.New("ktnode: failed to allocate callback table")
 	}
 	defer C.free(unsafe.Pointer(callbacks))
 	*callbacks = C.kt_algorithm_callbacks_v1{struct_size: C.uint32_t(C.sizeof_kt_algorithm_callbacks_v1), abi_version: C.KT_ABI_VERSION_MAJOR, setup: C.kt_go_setup_fn(), step: C.kt_go_step_fn(), close: C.kt_go_close_fn()}
