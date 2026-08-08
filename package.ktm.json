@@ -39,7 +39,7 @@
   "metadata": {
     "author": "Kinematic Trees Package Team",
     "description": "Kinematic Trees Go SDK boilerplate for projects that build against KTM-installed kt-node.",
-    "homepage": "https://github.com/Kinematic-Trees-Packages/ktnode-golang-sdk",
+    "homepage": "https://github.com/Kinematic-Trees-Packages/kt-node-go-sdk",
     "keywords": [
       "kinematic-trees",
       "robotics",
@@ -56,12 +56,12 @@
         "name": "Kinematic Trees Package Team"
       }
     ],
-    "name": "ktrobotics-go-sdk",
+    "name": "kt-node-go-sdk",
     "namespace": "kinematic-trees",
     "packageType": "local",
     "repository": {
       "type": "git",
-      "url": "https://github.com/Kinematic-Trees-Packages/ktnode-golang-sdk.git"
+      "url": "https://github.com/Kinematic-Trees-Packages/kt-node-go-sdk.git"
     },
     "version": "0.1.1"
   },
