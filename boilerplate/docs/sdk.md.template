@@ -1,0 +1,76 @@
+# {{KTM_CREATE_PROJECT_NAME}} Go SDK guide
+
+This project was generated from the Kinematic Trees kt-node Go SDK boilerplate. It is a normal editable Go module plus KTM metadata for native dependency resolution and packaging.
+
+## Project layout
+
+- `internal/robot/robot.go` — project-facing `Robot` type with cgo bindings to `kt_node.h` / `libkt_node`.
+- `cmd/{{KTM_CREATE_PROJECT_NAME}}/main.go` — runnable example command.
+- `examples/basic/main.go` — minimal example using the generated robot API.
+- `internal/robot/robot_test.go` — smoke test for Go API and native runtime wiring.
+- `scripts/build.sh` — builds the Go binary into `$KTM_BUILD_OUTPUT/compiled/bin` and writes a source snapshot to `$KTM_BUILD_OUTPUT/source`.
+- `ktm-pack.json` — editable package-owned pack mode definition.
+
+## Using the SDK
+
+Run through KTM so headers, libraries, and runtime paths are composed for cgo:
+
+```bash
+ktm doctor --platform {{KTM_CREATE_PRIMARY_PLATFORM}}
+ktm dev --platform {{KTM_CREATE_PRIMARY_PLATFORM}}
+ktm test --platform {{KTM_CREATE_PRIMARY_PLATFORM}}
+```
+
+In project code:
+
+```go
+package main
+
+import (
+    "fmt"
+    "{{KTM_CREATE_MODULE_NAME}}/internal/robot"
+)
+
+func main() {
+    fmt.Println(robot.New().Status())
+}
+```
+
+`Robot.Status()` reports the loaded kt-node ABI version.
+
+## Manual Go workflow
+
+Prefer KTM commands. If you need to run Go tooling directly, export the KTM environment first so cgo can find kt-node:
+
+```bash
+eval "$(ktm env --shell)"
+go test ./...
+go run ./cmd/{{KTM_CREATE_PROJECT_NAME}}
+```
+
+## Packing modes
+
+- `compiled` packages only `compiled/`, including the built executable.
+- `compiled-source` composes `compiled` plus `source/`, a separate canonical source snapshot. If composed lists overlap, KTM deduplicates paths deterministically before packaging.
+
+Docs are copied into generated projects for humans/agents, but are intentionally not packaged by default.
+## Dependency ownership / eject review
+
+The default pack modes keep `kinematic-trees/kt-node@{{KTM_CREATE_KT_NODE_VERSION}}` as a KTM-managed dependency. A normal compiled or compiled-source package must not copy KTM store paths, dependency shared libraries, headers, or metadata into the project payload.
+
+A future eject/self-contained flow should be explicit and separately reviewed because it changes who owns dependency updates, license notices, SBOM evidence, and security patching. Until that flow exists, `ktm pack --mode eject` is expected to fail rather than silently vendor dependencies.
+
+## Quick payload inspection
+
+After packing, inspect contents with:
+
+```bash
+tar -tzf _pack/*/{{KTM_CREATE_PRIMARY_PLATFORM}}/*.tar.gz | sort
+```
+
+Expected defaults:
+
+- `compiled`: only runtime/compiled payload roots.
+- `compiled-source`: runtime/compiled payload roots plus separate source-list roots.
+- `docs/`: present in the generated project folder, absent from archives by default.
+- `deps/`, `.ktrees/`, KTM store paths, and kt-node dependency libraries: absent from normal pack archives.

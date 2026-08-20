@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "ktm.pack.v1",
+  "defaultMode": "compiled",
+  "lists": {
+    "compiled": {
+      "description": "Go binary output built against KTM-managed kt-node.",
+      "include": [
+        "compiled"
+      ]
+    },
+    "source": {
+      "description": "Canonical Go source snapshot only; does not repeat compiled output.",
+      "include": [
+        "source"
+      ]
+    }
+  },
+  "modes": {
+    "compiled": {
+      "description": "Publish only the compiled/runtime artifact list.",
+      "lists": [
+        "compiled"
+      ]
+    },
+    "compiled-source": {
+      "description": "Publish compiled/runtime artifacts plus the source list. Dependencies remain KTM-managed.",
+      "lists": [
+        "compiled",
+        "source"
+      ]
+    }
+  }
+}
