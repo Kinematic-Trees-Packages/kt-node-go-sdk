@@ -24,5 +24,5 @@ export CGO_ENABLED=1
 export CGO_CFLAGS="${CGO_CFLAGS:-}$(cflags_from_cpath)"
 export CGO_LDFLAGS="${CGO_LDFLAGS:-}$(ldflags_from_library_path) -lkt_node"
 go build -o "$out/compiled/bin/{{KTM_CREATE_PROJECT_NAME}}" ./cmd/{{KTM_CREATE_PROJECT_NAME}}
-cp -a README.md package.ktm.json ktm-pack.json scripts go.mod cmd internal examples "$out/source"/
+cp -a README.md package.ktm.json scripts go.mod cmd internal examples "$out/source"/
 echo "Built {{KTM_CREATE_PROJECT_NAME}} Go compiled package into $out/compiled"
