@@ -36,6 +36,7 @@ cgo_cflags="${CGO_CFLAGS:-}$(cflags_from_cpath)"
 cgo_ldflags="${CGO_LDFLAGS:-}$(ldflags_from_library_path)$(kt_node_shared_library)"
 export CGO_CFLAGS="$cgo_cflags"
 export CGO_LDFLAGS="$cgo_ldflags"
+unset LD_RUN_PATH
 # shellcheck disable=SC1083 # KTM template placeholder is rendered before execution.
 go build -o "$out/compiled/bin/{{KTM_CREATE_PROJECT_NAME}}" ./cmd/{{KTM_CREATE_PROJECT_NAME}}
 cp -a README.md package.ktm.json scripts go.mod cmd internal examples "$out/source"/

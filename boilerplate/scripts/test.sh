@@ -85,6 +85,7 @@ cgo_cflags="${CGO_CFLAGS:-}$(cflags_from_cpath)"
 cgo_ldflags="${CGO_LDFLAGS:-}$(ldflags_from_library_path)$(kt_node_shared_library)"
 export CGO_CFLAGS="$cgo_cflags"
 export CGO_LDFLAGS="$cgo_ldflags"
+unset LD_RUN_PATH
 go test ./...
 # shellcheck disable=SC1083 # KTM template placeholder is rendered before execution.
 go run ./cmd/{{KTM_CREATE_PROJECT_NAME}}
