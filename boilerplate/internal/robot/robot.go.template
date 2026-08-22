@@ -1,7 +1,6 @@
 package robot
 
 /*
-#cgo LDFLAGS: -lkt_node
 #include <stdint.h>
 #include <kt_node.h>
 */

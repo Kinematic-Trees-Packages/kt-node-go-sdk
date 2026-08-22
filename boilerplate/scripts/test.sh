@@ -62,13 +62,30 @@ ldflags_from_library_path() {
   while IFS= read -r root; do printf ' -L%s' "$root"; done < <(split_paths "${LIBRARY_PATH:-}")
 }
 
+kt_node_shared_library() {
+  while IFS= read -r root; do
+    if [[ -f "$root/libkt_node.so" ]]; then
+      printf ' %s' "$root/libkt_node.so"
+      return 0
+    fi
+  done < <(split_paths "${LIBRARY_PATH:-}")
+  echo "libkt_node.so not found in LIBRARY_PATH; run through KTM so kt-node libraryPaths are composed" >&2
+  return 2
+}
+
 require_kt_node_build_env
-export CPATH="$(safe_path_list CPATH cpath)"
-export LIBRARY_PATH="$(safe_path_list LIBRARY_PATH libpath)"
-export LD_LIBRARY_PATH="$(safe_path_list LD_LIBRARY_PATH ldpath)"
+cpath_value="$(safe_path_list CPATH cpath)"
+library_path_value="$(safe_path_list LIBRARY_PATH libpath)"
+ld_library_path_value="$(safe_path_list LD_LIBRARY_PATH ldpath)"
+export CPATH="$cpath_value"
+export LIBRARY_PATH="$library_path_value"
+export LD_LIBRARY_PATH="$ld_library_path_value"
 export CGO_ENABLED=1
-export CGO_CFLAGS="${CGO_CFLAGS:-}$(cflags_from_cpath)"
-export CGO_LDFLAGS="${CGO_LDFLAGS:-}$(ldflags_from_library_path) -lkt_node"
+cgo_cflags="${CGO_CFLAGS:-}$(cflags_from_cpath)"
+cgo_ldflags="${CGO_LDFLAGS:-}$(ldflags_from_library_path)$(kt_node_shared_library)"
+export CGO_CFLAGS="$cgo_cflags"
+export CGO_LDFLAGS="$cgo_ldflags"
 go test ./...
+# shellcheck disable=SC1083 # KTM template placeholder is rendered before execution.
 go run ./cmd/{{KTM_CREATE_PROJECT_NAME}}
 echo "Go kt-node smoke passed"
