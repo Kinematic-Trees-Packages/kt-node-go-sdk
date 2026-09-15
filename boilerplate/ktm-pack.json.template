@@ -1,6 +1,8 @@
 {
-  "schemaVersion": "ktm.pack.v1",
+  "schemaVersion": "ktm.pack.v2",
+  "minimumKTMVersion": "1.2.20",
   "defaultMode": "compiled",
+  "globalExclude": ["**/.DS_Store", "**/*.tmp"],
   "lists": {
     "compiled": {
       "description": "Go binary output built against KTM-managed kt-node.",
@@ -29,5 +31,7 @@
         "source"
       ]
     }
-  }
+  },
+  "assertions": {"required": ["compiled"], "forbidden": ["**/.env", "**/*.pem"]},
+  "limits": {"maximumFileBytes": 52428800, "maximumArchiveBytes": 209715200}
 }
