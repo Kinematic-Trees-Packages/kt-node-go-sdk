@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED = {
-    "owner": "kinematictrees",
+    "owner": "kinematic-trees",
     "name": "kt-messages",
     "version": "0.1.0",
     "classification": "data_types",
@@ -26,4 +26,4 @@ for relative in ("package.ktm.json", "boilerplate/package.ktm.json.template"):
     if not matches[0].get("environments"):
         raise SystemExit(f"{relative}: kt-messages environment mapping is empty")
 
-print("Go SDK and template lock kinematictrees/kt-messages@0.1.0 as data_types")
+print("Go SDK and template lock kinematic-trees/kt-messages@0.1.0 as data_types")

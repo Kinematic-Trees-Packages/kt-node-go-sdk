@@ -32,7 +32,7 @@ internal/robot/robot.go
 
 The generated `package.ktm.json` declares direct dependencies on
 `kinematic-trees/kt-node@{{KTM_CREATE_KT_NODE_VERSION}}` and
-`kinematictrees/kt-messages@0.1.0`. Import generated datatypes from
+`kinematic-trees/kt-messages@0.1.0`. Import generated datatypes from
 `github.com/KinematicTrees/kt-messages-go/kt/messages/...`; the SDK does not
 own generated FlatBuffers sources.
 
