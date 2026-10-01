@@ -3,8 +3,8 @@ package ktnode
 import (
 	"fmt"
 
+	data "github.com/KinematicTrees/kt-messages-go/kt/messages/vision_sample"
 	flatbuffers "github.com/google/flatbuffers/go"
-	data "github.com/kinematic-trees-packages/kt-node-go-sdk/go/ktnode/generated/bow/data"
 )
 
 type ImageFrame struct {

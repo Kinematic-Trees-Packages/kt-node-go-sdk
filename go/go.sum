@@ -1,2 +1,4 @@
+github.com/KinematicTrees/kt-messages-go v0.1.0 h1:tID6FNlJ1H+RCiD4IH2pO0Hpb1UdsHTkVUOy415yjfw=
+github.com/KinematicTrees/kt-messages-go v0.1.0/go.mod h1:UYuZKc8w1IiPpVSNOsjF5xCz8j2e+ftl4uCU3M3eC0E=
 github.com/google/flatbuffers v24.12.23+incompatible h1:ubBKR94NR4pXUCY/MUsRVzd9umNW7ht7EG9hHfS9FX8=
 github.com/google/flatbuffers v24.12.23+incompatible/go.mod h1:1AeVuKshWv4vARoZatz6mlQ0JxURH0Kv5+zNeJKJCa8=
