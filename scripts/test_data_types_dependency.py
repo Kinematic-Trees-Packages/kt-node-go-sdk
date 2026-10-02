@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SDK_NAME = "kt-go-sdk"
 EXPECTED = {
     "owner": "kinematic-trees",
     "name": "kt-messages",
@@ -19,11 +20,22 @@ def load(path: Path) -> dict:
 
 
 for relative in ("package.ktm.json", "boilerplate/package.ktm.json.template"):
-    dependencies = load(ROOT / relative)["dependencies"]["packages"]
+    manifest = load(ROOT / relative)
+    dependencies = manifest["dependencies"]["packages"]
     matches = [item for item in dependencies if item.get("name") == "kt-messages"]
     if len(matches) != 1 or any(matches[0].get(key) != value for key, value in EXPECTED.items()):
         raise SystemExit(f"{relative}: expected one exact kt-messages data_types dependency")
     if set(matches[0].get("environments", {}).values()) != {"portable"}:
         raise SystemExit(f"{relative}: kt-messages must map every parent to portable")
+    runtime = [item for item in dependencies if item.get("classification") == "library"]
+    expected_version = "0.1.1" if relative == "package.ktm.json" else "{{KTM_CREATE_KT_NODE_VERSION}}"
+    if len(runtime) != 1 or (runtime[0].get("owner"), runtime[0].get("name"), runtime[0].get("version")) != (
+        "kinematic-trees", "libkt", expected_version
+    ):
+        raise SystemExit(f"{relative}: expected one exact libkt library dependency")
+
+manifest = load(ROOT / "package.ktm.json")
+if (manifest["metadata"]["namespace"], manifest["metadata"]["name"]) != ("kinematic-trees", SDK_NAME):
+    raise SystemExit(f"package.ktm.json: expected kinematic-trees/{SDK_NAME}")
 
 print("Go SDK and template lock kinematic-trees/kt-messages@0.1.0 as data_types")

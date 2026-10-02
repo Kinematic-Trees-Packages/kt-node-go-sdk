@@ -1,1 +1,1 @@
-kt-node-go-sdk source SDK package; depends on kinematic-trees/kt-node@0.1.1; no native runtime bundled.
+kt-go-sdk source SDK package; depends on kinematic-trees/libkt@0.1.1; no native runtime bundled.

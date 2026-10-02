@@ -1,6 +1,6 @@
 # {{KTM_CREATE_PROJECT_NAME}}
 
-Editable Kinematic Trees `go` project created from a KTM-installed kt-node boilerplate package.
+Editable Kinematic Trees `go` project created from a KTM-installed libkt boilerplate package.
 
 KTM copied this project out of the immutable package store so you can edit it normally. Work in this directory, not in the installed boilerplate package.
 
@@ -31,7 +31,7 @@ internal/robot/robot.go
 ## Dependency model
 
 The generated `package.ktm.json` declares direct dependencies on
-`kinematic-trees/kt-node@{{KTM_CREATE_KT_NODE_VERSION}}` and
+`kinematic-trees/libkt@{{KTM_CREATE_KT_NODE_VERSION}}` and
 `kinematic-trees/kt-messages@0.1.0`. Import generated datatypes from
 `github.com/KinematicTrees/kt-messages-go/kt/messages/...`; the SDK does not
 own generated FlatBuffers sources.
