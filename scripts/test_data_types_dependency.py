@@ -23,7 +23,7 @@ for relative in ("package.ktm.json", "boilerplate/package.ktm.json.template"):
     matches = [item for item in dependencies if item.get("name") == "kt-messages"]
     if len(matches) != 1 or any(matches[0].get(key) != value for key, value in EXPECTED.items()):
         raise SystemExit(f"{relative}: expected one exact kt-messages data_types dependency")
-    if not matches[0].get("environments"):
-        raise SystemExit(f"{relative}: kt-messages environment mapping is empty")
+    if set(matches[0].get("environments", {}).values()) != {"portable"}:
+        raise SystemExit(f"{relative}: kt-messages must map every parent to portable")
 
 print("Go SDK and template lock kinematic-trees/kt-messages@0.1.0 as data_types")
