@@ -45,6 +45,16 @@ if runtime.get("package") != "./package.ktm.json":
 if (ROOT / "boilerplate/runtime").exists() or list((ROOT / "boilerplate").rglob("node.package.json*")):
     raise SystemExit("boilerplate must not contain nested or duplicate package contracts")
 
+packing = load(ROOT / "boilerplate/ktm-pack.json.template")
+if packing["lists"]["contracts"]["include"] != ["package.ktm.json", "runtime.json"]:
+    raise SystemExit("pack contracts list must contain only the two root contracts")
+if packing["lists"]["compiled"]["include"] != ["compiled"]:
+    raise SystemExit("compiled artifact list must not duplicate or refer to the contracts list")
+if packing["modes"]["compiled"]["lists"] != ["contracts", "compiled"]:
+    raise SystemExit("compiled mode must compose root contracts with compiled artifacts")
+if packing["modes"]["compiled-source"]["lists"] != ["contracts", "compiled", "source"]:
+    raise SystemExit("compiled-source mode must add source without duplicating contracts")
+
 manifest = load(ROOT / "package.ktm.json")
 if (manifest["metadata"]["namespace"], manifest["metadata"]["name"]) != ("kinematic-trees", SDK_NAME):
     raise SystemExit(f"package.ktm.json: expected kinematic-trees/{SDK_NAME}")

@@ -10,10 +10,7 @@
     },
     "compiled": {
       "description": "Go binary output built against KTM-managed kt-node.",
-      "include": [
-        "contracts",
-        "compiled"
-      ]
+      "include": ["compiled"]
     },
     "source": {
       "description": "Canonical Go source snapshot only; does not repeat compiled output.",
@@ -26,6 +23,7 @@
     "compiled": {
       "description": "Publish only the compiled/runtime artifact list.",
       "lists": [
+        "contracts",
         "compiled"
       ]
     },
