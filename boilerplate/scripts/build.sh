@@ -3,6 +3,7 @@ set -euo pipefail
 out="${KTM_BUILD_OUTPUT:-build/ktm-output}"
 rm -rf "$out"
 mkdir -p "$out/compiled/bin" "$out/source"
+cp -a package.ktm.json runtime.json "$out/"
 
 split_paths() {
   local value=${1:-}
@@ -110,5 +111,5 @@ unset LD_RUN_PATH
 # shellcheck disable=SC1083 # KTM template placeholder is rendered before execution.
 go build -o "$out/compiled/bin/{{KTM_CREATE_PROJECT_NAME}}" ./cmd/{{KTM_CREATE_PROJECT_NAME}}
 remove_elf_search_paths "$out/compiled/bin/{{KTM_CREATE_PROJECT_NAME}}"
-cp -a README.md package.ktm.json scripts go.mod cmd internal examples "$out/source"/
+cp -a README.md scripts go.mod cmd internal examples "$out/source"/
 echo "Built {{KTM_CREATE_PROJECT_NAME}} Go compiled package into $out/compiled"

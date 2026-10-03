@@ -28,6 +28,14 @@ Recommended first edit:
 internal/robot/robot.go
 ```
 
+## Package and runtime roles
+
+`package.ktm.json` is the only package/process contract and owns channels and
+configuration schema. Its sibling `runtime.json` identifies one deployment
+instance and may supply routing, scheduling, channel policy, and concrete
+configuration values. Generated projects contain no `runtime/` directory and
+no `node.package.json` copy.
+
 ## Dependency model
 
 The generated `package.ktm.json` declares direct dependencies on

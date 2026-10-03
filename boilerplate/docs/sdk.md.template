@@ -10,6 +10,8 @@ This project was generated from the Kinematic Trees kt-node Go SDK boilerplate. 
 - `internal/robot/robot_test.go` — smoke test for Go API and native runtime wiring.
 - `scripts/build.sh` — builds the Go binary into `$KTM_BUILD_OUTPUT/compiled/bin` and writes a source snapshot to `$KTM_BUILD_OUTPUT/source`.
 - `ktm-pack.json` — editable package-owned pack mode definition.
+- `package.ktm.json` — the only package/process contract.
+- `runtime.json` — sibling deployment-instance configuration referencing `./package.ktm.json`.
 
 ## Using the SDK
 

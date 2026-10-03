@@ -33,6 +33,17 @@ for relative in ("package.ktm.json", "boilerplate/package.ktm.json.template"):
         "kinematic-trees", "libkt", expected_version
     ):
         raise SystemExit(f"{relative}: expected one exact libkt library dependency")
+    if relative.startswith("boilerplate/"):
+        if "runtime.json" not in manifest["files"] or "runtime" in manifest["files"]:
+            raise SystemExit(f"{relative}: expected a root runtime.json and no runtime directory")
+        if "development" in manifest:
+            raise SystemExit(f"{relative}: legacy development.commands is forbidden")
+
+runtime = load(ROOT / "boilerplate/runtime.json.template")
+if runtime.get("package") != "./package.ktm.json":
+    raise SystemExit("boilerplate/runtime.json.template must reference ./package.ktm.json")
+if (ROOT / "boilerplate/runtime").exists() or list((ROOT / "boilerplate").rglob("node.package.json*")):
+    raise SystemExit("boilerplate must not contain nested or duplicate package contracts")
 
 manifest = load(ROOT / "package.ktm.json")
 if (manifest["metadata"]["namespace"], manifest["metadata"]["name"]) != ("kinematic-trees", SDK_NAME):

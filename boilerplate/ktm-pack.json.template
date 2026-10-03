@@ -4,9 +4,14 @@
   "defaultMode": "compiled",
   "globalExclude": ["**/.DS_Store", "**/*.tmp"],
   "lists": {
+    "contracts": {
+      "description": "The package contract and sibling runtime configuration remain once at archive root.",
+      "include": ["package.ktm.json", "runtime.json"]
+    },
     "compiled": {
       "description": "Go binary output built against KTM-managed kt-node.",
       "include": [
+        "contracts",
         "compiled"
       ]
     },
@@ -27,11 +32,12 @@
     "compiled-source": {
       "description": "Publish compiled/runtime artifacts plus the source list. Dependencies remain KTM-managed.",
       "lists": [
+        "contracts",
         "compiled",
         "source"
       ]
     }
   },
-  "assertions": {"required": ["compiled"], "forbidden": ["**/.env", "**/*.pem"]},
+  "assertions": {"required": ["package.ktm.json", "runtime.json", "compiled"], "forbidden": ["**/node.package.json", "runtime/**", "**/.env", "**/*.pem"]},
   "limits": {"maximumFileBytes": 52428800, "maximumArchiveBytes": 209715200}
 }
